@@ -171,21 +171,19 @@ public class MainActivity extends AppCompatActivity {
 
 
                 JSONObject article = new JSONObject(s);
-                String title = DatabaseUtils.sqlEscapeString(article.getString("title"));
-                String url = DatabaseUtils.sqlEscapeString(article.getString("url"));
-                String id = DatabaseUtils.sqlEscapeString(article.getString("id"));
-                articleUrls.add(article.getString("url"));
-                articleTitles.add(article.getString("title"));
-                arrayAdapter.notifyDataSetChanged();
-                Log.i("article Title",title);
-                Log.i("article URL",url);
-                Log.i("article id",id);
-                newsDatabase.execSQL(String.format("INSERT INTO articles (id,title,url) VALUES (%s,%s,%s)",id,title,url));
-//                for (int i=0;i<arr.length();i++){
-//                    String id = arr.getString(i);
-//                    getArticle(id);
+                if (!article.isNull("title")&&!article.isNull("url")) {
+                    String title = DatabaseUtils.sqlEscapeString(article.getString("title"));
+                    String url = DatabaseUtils.sqlEscapeString(article.getString("url"));
+                    String id = DatabaseUtils.sqlEscapeString(article.getString("id"));
+                    articleUrls.add(article.getString("url"));
+                    articleTitles.add(article.getString("title"));
+                    arrayAdapter.notifyDataSetChanged();
+                    Log.i("article Title", title);
+                    Log.i("article URL", url);
+                    Log.i("article id", id);
 
-
+                    newsDatabase.execSQL(String.format("INSERT INTO articles (id,title,url) VALUES (%s,%s,%s)", id, title, url));
+                }
             } catch (Exception e) {
 
                 Toast.makeText(getApplicationContext(),"Could not find article :(",Toast.LENGTH_SHORT).show();
